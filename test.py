@@ -1,64 +1,42 @@
-import json
+import fitz  # PyMuPDF
+import re
 
-s = '''
-{
-    "words": [
-        {
-            "english": "convention",
-            "russian": "договорённость, традиция",
-            "part_of_speech": "noun",
-            "transcription": "kənˈvɛnʃən",
-            "examples": ["conventions of essay writing", "conventional expression"],
-            "context": "Установленные обычаи или договорённость. Синоним к слову традиции.",
-            "lesson_part": "основная лексика"
-        },
-        {
-            "english": "conventional",
-            "russian": "обычный, традиционный",
-            "part_of_speech": "adjective",
-            "transcription": "kənˈvɛnʃənl",
-            "examples": ["the conventional phrasing", "conventional expression"],
-            "context": "The adjective is conventional, which is a synonym for traditional. The adverb is conventionally.",
-            "lesson_part": "основная лексика"
-        },
-        {
-            "english": "expression",
-            "russian": "выражение",
-            "part_of_speech": "noun",
-            "transcription": "ɪkˈspres̩ʃn",
-            "examples": ["a conventional expression"],
-            "context": "A conventional expression. This is a fixed phrase or a set phrase that is traditionally used in a given context.",
-            "lesson_part": "основная лексика"
-        },
-        {
-            "english": "introductory",
-            "russian": "вводный, вступительный",
-            "part_of_speech": "adjective",
-            "transcription": "ɪnˈtrədʌktəri',
-            "examples": ["the introductory paragraph"],
-            "context": "The introductory paragraph is the opening paragraph of your essay.",
-            "lesson_part": "основная лексика"
-        },
-        {
-            "english": "paragraph",
-            "russian": "параграф, абзац",
-            "part_of_speech": "noun",
-            "transcription": "ˈpærəɡræf",
-            "examples": ["the introductory paragraph"],
-            "context": "The introductory paragraph is the opening paragraph of your essay.",
-            "lesson_part": "основная лексика"
-        },
-        {
-            "english": "hook",
-            "russian": "заковыристая фраза, цепляющая предложение",
-            "part_of_speech": "noun",
-            "transcription": "hʊk",
-            "examples": ["the hook is optional"],
-            "context": "The hook is the first sentence of the essay, which introduces the main topic.",
-            "lesson_part": "основная лексика"
-        }
-    ]
-}
-'''
+def extract_bold_text(pdf_path):
+    """
+    Извлекает жирный текст из PDF с помощью PyMuPDF
+    """
+    bold_texts = []
+    
+    # Открываем PDF
+    doc = fitz.open(pdf_path)
+    
+    for page_num in range(len(doc)):
+        page = doc.load_page(page_num)
+        
+        # Получаем текст со свойствами
+        blocks = page.get_text("dict")["blocks"]
+        
+        for block in blocks:
+            if "lines" in block:
+                for line in block["lines"]:
+                    for span in line["spans"]:
+                        # Проверяем, является ли текст жирным
+                        # Жирный текст обычно имеет флаг 16 или содержит "Bold" в названии шрифта
+                        is_bold = span["flags"] & 2**4  # 16 - bold flag
+                        font_name = span["font"].lower()
+                        
+                        if is_bold or "bold" in font_name:
+                            text = span["text"].strip()
+                            if text:  # Игнорируем пустые строки
+                                bold_texts.append(text)
+    
+    doc.close()
+    return bold_texts
 
-print(json.loads(s))
+# Использование
+pdf_path = "ваш_файл.pdf"
+bold_text = extract_bold_text(pdf_path)
+
+print("Жирный текст в документе:")
+for i, text in enumerate(bold_text, 1):
+    print(f"{i}. {text}")
