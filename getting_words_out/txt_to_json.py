@@ -1,8 +1,8 @@
 import ollama
 
-def txt_for_json(path):
+def txt_for_json(path_save):
     try:
-        with open(f"{path}res.txt", "r", encoding='utf-8') as file:
+        with open(f"{path_save}res.txt", "r", encoding='utf-8') as file:
             list_text = file.read().splitlines()
     except Exception as e:
         print(f"Ошибка {e}, при открытии файла в {path}")
@@ -36,13 +36,14 @@ def txt_for_json(path):
         
         try:
             ob = response['message']['content']
+            print(ob)
             exec(f"r = {ob}")
             for i in r:
                 list_ans.append(i)
             
             
         except Exception as e:
-            print(path)
+            print(path_save)
             print(i)
             print(f"Ошибка {e}")
             return [], False
