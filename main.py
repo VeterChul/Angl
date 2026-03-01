@@ -1,11 +1,10 @@
 from random import randint
-
 from os import listdir, mkdir
 #from fblock.main import main as getting_words_out
 from sblock.main import main as transcription
 from tblock.main import main as essay_f
 
-seed = "011"
+seed = "g01"
 
 def main(path, path_save, seed):
     
@@ -19,10 +18,12 @@ def main(path, path_save, seed):
     for i in sorted(listdir(path)):
         
         if seed[0] != "0":
-            pass
-            #fblock = getting_words_out(path, path_save, i)
-            #if not(fblock):
-            #    continue
+            if seed[0] == "g":
+                fblock = ["Hello", "my", "beloved", "world"]
+            elif seed[0] == "i":
+                fblock = getting_words_out(path, path_save, i)
+                if not(fblock):
+                   continue
 
         if seed[1] != "0":
             for j in listdir(f"{path}/{i}/pdf/"):
@@ -41,7 +42,7 @@ def main(path, path_save, seed):
             print(transcriptions)
 
         if seed[2] != 0:
-            i = randint(len(fblock))
+            i = randint(0, len(fblock))
             essay = essay_f(fblock[i])
             print(essay)
 
