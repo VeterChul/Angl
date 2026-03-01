@@ -45,6 +45,7 @@ def main(path, path_save, seed):
             i = randint(0, len(fblock))
             essay = essay_f(fblock[i])
             print(essay)
-
+        
+        
 
 main("fold", "fold_save", seed)
