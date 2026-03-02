@@ -1,5 +1,6 @@
 from random import randint
 from os import listdir, mkdir
+from faster_whisper import WhisperModel
 #from fblock.main import main as getting_words_out
 from sblock.main import main as transcription
 from tblock.main import main as essay_f
@@ -21,7 +22,18 @@ def main(path, path_save, seed):
             if seed[0] == "g":
                 fblock = ["Hello", "my", "beloved", "world"]
             elif seed[0] == "i":
-                fblock = getting_words_out(path, path_save, i)
+                
+                #Создаем модель для расспознования звука
+
+                model = WhisperModel(
+                    "large-v3",
+                    device="cuda",
+                    compute_type="int8_float16",  # экономия VRAM
+                    cpu_threads=4,                 # опционально, для декодирования на CPU
+                    num_workers=1                  # сколько потоков загрузки данных
+                    )
+                
+                fblock = getting_words_out(f"{path}/{i}", f"{path_save}/{i}", model)
                 if not(fblock):
                    continue
 
