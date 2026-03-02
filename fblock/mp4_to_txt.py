@@ -14,11 +14,11 @@ def mp4_to_txt(path, path_save, model):
             print(f"Начало обработки {f"{path}/{j}"}")
             
             res = model.transcribe(
-                f"{path}{j}",
-                fp16=True,  # Используем половинную точность
-                word_timestamps=False,  # Отключаем временные метки слов
-                best_of=2,  # Уменьшаем
-                beam_size=2,  # Уменьшаем
+                f"{path}/{j}",
+                fp16=True,
+                word_timestamps=False,
+                best_of=2,
+                beam_size=2,
                 temperature=0.0
             )
             
