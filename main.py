@@ -5,7 +5,7 @@ from faster_whisper import WhisperModel
 from sblock.main import main as transcription
 from tblock.main import main as essay_f
 
-seed = "g01"
+seed = "301"
 
 def main(path, path_save, seed):
     
@@ -21,8 +21,13 @@ def main(path, path_save, seed):
         if seed[0] != "0":
             if seed[0] == "g":
                 fblock = ["Hello", "my", "beloved", "world"]
-            elif seed[0] == "i":
+            else:
                 
+                seed1 = [int(seed[0]) % 2, (int(seed[0])//2) % 2]
+                print(seed1)
+                exit
+
+
                 #Создаем модель для расспознования звука
 
                 model = WhisperModel(
@@ -33,7 +38,7 @@ def main(path, path_save, seed):
                     num_workers=1                  # сколько потоков загрузки данных
                     )
                 
-                fblock = getting_words_out(f"{path}/{i}", f"{path_save}/{i}", model)
+                fblock = getting_words_out(f"{path}/{i}", f"{path_save}/{i}", model, seed1)
                 if not(fblock):
                    continue
 

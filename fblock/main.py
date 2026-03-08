@@ -3,7 +3,7 @@ from os import listdir, mkdir
 from fblock.mp4_to_txt import mp4_to_txt
 from fblock.txt_to_json import txt_for_json
 
-def main(path, path_save, model):
+def main(path, path_save, model, seed):
 
     r = {}
             
@@ -14,12 +14,12 @@ def main(path, path_save, model):
         print("Директория для сохраненых файлов уже есть")
 
     #расспознаем аудио в текст, если не сделали этого раньше
-    if not("res.txt" in listdir(f"{path_save}/{i}")):     
+    if seed[0]:     
         if not(mp4_to_txt(path, path_save, model)):
             return False
     
     #Доставание слов из расшифровки 
-    if not(f"list_slov.txt" in listdir(path_save)):
+    if seed[1]:
         print("Запущена неиросеть для доставания слов из расшифровки")
         list_json, flag = txt_for_json(path_save)
         if not(flag):
