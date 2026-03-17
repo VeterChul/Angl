@@ -22,7 +22,7 @@ def mp4_to_txt(path, path_save, model):
                 temperature=0.0
             )
             
-            with open(f"{path_save}res.txt", "a", encoding='utf-8') as file:
+            with open(f"{path_save}res.txt", "w", encoding='utf-8') as file:
                 file.write(res["text"] + "\n")
             
             torch.cuda.empty_cache()
