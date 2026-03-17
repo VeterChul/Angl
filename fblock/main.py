@@ -16,8 +16,8 @@ def main(path, path_save, model, seed):
     #расспознаем аудио в текст, если не сделали этого раньше
     if seed[0]:     
         if not(mp4_to_txt(path, path_save, model)):
-            return False
-    
+            return False      
+
     #Доставание слов из расшифровки 
     if seed[1]:
         print("Запущена неиросеть для доставания слов из расшифровки")
