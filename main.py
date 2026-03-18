@@ -1,11 +1,11 @@
 from random import randint
 from os import listdir, mkdir
 from faster_whisper import WhisperModel
-#from fblock.main import main as getting_words_out
+from fblock.main import main as getting_words_out
 from sblock.main import main as transcription
 from tblock.main import main as essay_f
 
-seed = "301"
+seed = ["111","0","1"]
 
 def main(path, path_save, seed):
     
@@ -15,7 +15,15 @@ def main(path, path_save, seed):
     except FileExistsError:
         print("Директория для сохраненых файлов уже есть")
 
-
+    if not(seed[0] in 'g'):
+        model = WhisperModel(
+                        "large-v3",
+                        device="cuda",
+                        compute_type="int8_float16",  # экономия VRAM
+                        cpu_threads=4,                 # опционально, для декодирования на CPU
+                        num_workers=1                  # сколько потоков загрузки данных
+                        )
+                    
     for i in sorted(listdir(path)):
         
         if seed[0] != "0":
@@ -23,20 +31,8 @@ def main(path, path_save, seed):
                 fblock = ["Hello", "my", "beloved", "world"]
             else:
                 
-                seed1 = [int(seed[0]) % 2, (int(seed[0])//2) % 2]
-                print(seed1)
-                exit
-
-
-                #Создаем модель для расспознования звука
-
-                model = WhisperModel(
-                    "large-v3",
-                    device="cuda",
-                    compute_type="int8_float16",  # экономия VRAM
-                    cpu_threads=4,                 # опционально, для декодирования на CPU
-                    num_workers=1                  # сколько потоков загрузки данных
-                    )
+                seed1 = [int(i) for i in seed[0]]
+                
                 
                 fblock = getting_words_out(f"{path}/{i}", f"{path_save}/{i}", model, seed1)
                 if not(fblock):

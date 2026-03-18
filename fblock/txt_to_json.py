@@ -2,7 +2,7 @@ import ollama
 
 def txt_for_json(path_save):
     try:
-        with open(f"{path_save}res.txt", "r", encoding='utf-8') as file:
+        with open(f"{path_save}/res.txt", "r", encoding='utf-8') as file:
             list_text = file.read().splitlines()
     except Exception as e:
         print(f"Ошибка {e}, при открытии файла в {path}")

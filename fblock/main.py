@@ -1,4 +1,4 @@
-from os import listdir, mkdir
+from os import listdir, mkdir, remove
 
 from fblock.mp4_to_txt import mp4_to_txt
 from fblock.txt_to_json import txt_for_json
@@ -13,8 +13,9 @@ def main(path, path_save, model, seed):
     except FileExistsError:
         print("Директория для сохраненых файлов уже есть")
 
-    #расспознаем аудио в текст, если не сделали этого раньше
     if seed[0]:     
+        if seed[2]:
+            remove(f"{path_save}/res.txt")
         if not(mp4_to_txt(path, path_save, model)):
             return False      
 
