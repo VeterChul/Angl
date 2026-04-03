@@ -15,26 +15,17 @@ def main(path, path_save, seed):
     except FileExistsError:
         print("Директория для сохраненых файлов уже есть")
 
-    if not(seed[0] in 'g'):
-        model = WhisperModel(
-                        "large-v3",
-                        device="cuda",
-                        compute_type="int8_float16",  # экономия VRAM
-                        cpu_threads=4,                 # опционально, для декодирования на CPU
-                        num_workers=1                  # сколько потоков загрузки данных
-                        )
-                    
     for i in sorted(listdir(path)):
         
         if seed[0] != "0":
             if seed[0] == "g":
-                fblock = ["Hello", "my", "beloved", "world"]
+                fblock = ["Hello", "my", "beloved", "wogit rld"]
             else:
                 
                 seed1 = [int(i) for i in seed[0]]
                 
                 
-                fblock = getting_words_out(f"{path}/{i}", f"{path_save}/{i}", model, seed1)
+                fblock = getting_words_out(f"{path}/{i}", f"{path_save}/{i}", seed1)
                 if not(fblock):
                    continue
 

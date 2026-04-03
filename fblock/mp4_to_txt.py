@@ -2,7 +2,7 @@ import torch
 import gc
 from os import listdir
 
-def mp4_to_txt(path, path_save, model):
+def mp4_to_txt(path, path_save):
     try:
         list_mp3 = []
 
@@ -13,6 +13,14 @@ def mp4_to_txt(path, path_save, model):
         for j in list_mp3:
             print(f"Начало обработки {f"{path}/{j}"}")
             
+            model = WhisperModel(
+                "large-v3",
+                device="cuda",
+                compute_type="int8_float16",  # экономия VRAM
+                cpu_threads=4,                 # опционально, для декодирования на CPU
+                num_workers=1                  # сколько потоков загрузки данных
+                )
+
             # Транскрибируем файл (fp16 больше не передаём)
             segments, info = model.transcribe(
                 f"{path}/{j}",
@@ -25,10 +33,12 @@ def mp4_to_txt(path, path_save, model):
             print(full_text)
             with open(f"{path_save}/res.txt", "a", encoding='utf-8') as file:
                 file.write(full_text + "\n")
-            
-            torch.cuda.empty_cache()
-            gc.collect()
-            
+
+            # 3. Принудительная очистка GPU (обязательно!)
+            del model                     # удаляем объект модели
+            gc.collect()                  # собираем мусор Python
+            torch.cuda.empty_cache()      # очищаем кэш аллокатора PyTorch
+
             print(f"Конец обработки {path}{j}")
     except Exception as e:
         print(f"Ошибка на этапе расспознования аудио:\n{e}\n")
