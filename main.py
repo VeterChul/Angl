@@ -5,7 +5,7 @@ from fblock.main import main as getting_words_out
 from sblock.main import main as transcription
 from tblock.main import main as essay_f
 
-seed = ["111","0","1"]
+seed = ["010","0","1"]
 
 def main(path, path_save, seed):
     
@@ -54,7 +54,7 @@ def main(path, path_save, seed):
             transcriptions = transcription(pdf_file, pdf_save)
             print(transcriptions)
 
-        if seed[2] != 0:
+        if seed[2] != "0":
             i = randint(0, len(fblock))
             essay = essay_f(fblock[i])
             print(essay)
