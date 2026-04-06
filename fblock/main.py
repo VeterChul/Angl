@@ -26,7 +26,8 @@ def main(path, path_save, seed):
         if not(flag):
             return False
         with open(f"{path_save}/list_slov.txt", "w", encoding="utf-8") as file:
-            file.write(list_json)
+            for word in list_json:
+                file.write(word+";")
     else:            
         print("Использование раньше расспознаных слов")
         try:
