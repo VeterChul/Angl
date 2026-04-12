@@ -5,9 +5,10 @@ from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.lib.pagesizes import A4
 from random import randint
+from os import remove
 
 
-def main(wolds, transcriptions, text, path_save):
+def main(wolds, transcriptions, text, fav_words, path_save, table_of_contents):
     
     font_size = 20
     font = 'font.ttf'
@@ -15,11 +16,21 @@ def main(wolds, transcriptions, text, path_save):
     x = 40
     y = 800
 
+    try:
+        remove(path_save)
+    except:
+        pass
+
     #Создаем pdf
     pdfmetrics.registerFont(TTFont('MyFont', font))
     c = canvas.Canvas(path_save)
 
     c.setFont('MyFont', font_size)
+
+    c.drawString(x+randint(0, 10), y, table_of_contents)
+
+    y -= 25
+
 
     for i in wolds:
         if y<=20:
@@ -29,6 +40,7 @@ def main(wolds, transcriptions, text, path_save):
         c.drawString(x+randint(0, 10), y, i)
         y -= 25
 
+
     if y<=20:    
             c.showPage()
             c.setFont('MyFont', font_size)
@@ -37,6 +49,7 @@ def main(wolds, transcriptions, text, path_save):
     c.drawString(x+randint(0, 10), y, "Words in transcription")
     y -= 25
 
+    
     for i in  transcriptions:
         if y<=20:    
             c.showPage()
@@ -50,7 +63,16 @@ def main(wolds, transcriptions, text, path_save):
             c.showPage()
             c.setFont('MyFont', font_size)
             y = 800
-        
+
+    c.drawString(x+randint(0, 10), y, f'Favorite Word/Expression: "{fav_words}"')
+    y -= 25
+
+    if y<=20:    
+            c.showPage()
+            c.setFont('MyFont', font_size)
+            y = 800
+
+
     page_width, page_height = A4
     left_margin = 40
     right_margin = 40
@@ -91,29 +113,29 @@ def main(wolds, transcriptions, text, path_save):
     # Сохраняем PDF
     c.save()
 
-words = [
-    "apple", "house", "car", "sun", "forest", "water", "fire", "earth", "sky", "sea",
-    "city", "street", "square", "bridge", "river", "lake", "mountain", "wind", "snow", "rain",
-    "morning", "afternoon", "evening", "night", "winter", "spring", "summer", "autumn", "time", "minute",
-    "person", "woman", "man", "child", "family", "friend", "brother", "sister", "mother", "father",
-    "work", "rest", "study", "school", "university", "teacher", "doctor", "engineer", "artist", "musician",
-    ]
+# words = [
+#     "apple", "house", "car", "sun", "forest", "water", "fire", "earth", "sky", "sea",
+#     "city", "street", "square", "bridge", "river", "lake", "mountain", "wind", "snow", "rain",
+#     "morning", "afternoon", "evening", "night", "winter", "spring", "summer", "autumn", "time", "minute",
+#     "person", "woman", "man", "child", "family", "friend", "brother", "sister", "mother", "father",
+#     "work", "rest", "study", "school", "university", "teacher", "doctor", "engineer", "artist", "musician",
+#     ]
 
-transcriptions = [{'w': 'hook,', 't': '/hʊk/'}, {'w': 'survey', 't': '/ˈsɜː(r).veɪ/'}, {'w': 'thesis', 't': '/ˈθiː.sɪs/'}]
+#transcriptions = [{'w': 'hook,', 't': '/hʊk/'}, {'w': 'survey', 't': '/ˈsɜː(r).veɪ/'}, {'w': 'thesis', 't': '/ˈθiː.sɪs/'}]
 
-text = '''
-Favorite Word: beloved
-The word that I like most from this set is beloved
-beloved is an adjective
-How do you say it in Russian?
-It translates into Russian as любимый, любимая
-What does it mean?
-It means deeply loved or cherished.
-A good synonym for 'beloved' is dear
-The opposite of 'beloved' is hated
-I find this word inspiring
-because it reminds me of  my grandmother who was always a beloved figure in our family. She had a warm smile and a kind heart, which made everyone feel loved and valued.
-'''
+# text = '''
+# Favorite Word: beloved
+# The word that I like most from this set is beloved
+# beloved is an adjective
+# How do you say it in Russian?
+# It translates into Russian as любимый, любимая
+# What does it mean?
+# It means deeply loved or cherished.
+# A good synonym for 'beloved' is dear
+# The opposite of 'beloved' is hated
+# I find this word inspiring
+# because it reminds me of  my grandmother who was always a beloved figure in our family. She had a warm smile and a kind heart, which made everyone feel loved and valued.
+# '''
 
 
-main(words, transcriptions, text, "test.pdf")
+# main(words, transcriptions, text, "test.pdf")

@@ -5,7 +5,7 @@ from sblock.main import main as transcription
 from tblock.main import main as essay_f
 from importer.main import main as importer
 
-seed = ["010","1","1"]
+seed = ["111","1","1"]
 
 def main(path, path_save, seed):
     
@@ -47,13 +47,20 @@ def main(path, path_save, seed):
 
         if seed[2] != "0":
             j = randint(0, len(fblock))
-            print(fblock)
-            essay = essay_f(fblock[j])
-            print(essay)
+            fav_words = fblock[j]
+            essay = essay_f(fav_words)
+            
+        table_of_contents = f"VOCAB #{i} "
+        
+        for j in listdir(f"{path}/{i}"):
+            if "mp3" in j:
+                s = j.split("-")
+                s[-1] = s[-1][:-4]
+                table_of_contents += " ".join(s[2:])
+                break
+        
+        importer(fblock, transcriptions, essay, fav_words, f"{path_save}/{i}/ans.pdf", table_of_contents)
     
-        importer(fblock, transcriptions, essay, f"{path_save}/{i}/ans.pdf")
-    
-        break
 
     # print("fbloc")
     # print(fblock)
