@@ -1,11 +1,10 @@
 from random import randint
 from os import listdir, mkdir
-from faster_whisper import WhisperModel
 from fblock.main import main as getting_words_out
 from sblock.main import main as transcription
 from tblock.main import main as essay_f
 
-seed = ["010","0","1"]
+seed = ["111","0","1"]
 
 def main(path, path_save, seed):
     
@@ -49,6 +48,7 @@ def main(path, path_save, seed):
             i = randint(0, len(fblock))
             essay = essay_f(fblock[i])
             print(essay)
+        break
         
         
 

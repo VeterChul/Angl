@@ -15,7 +15,10 @@ def main(path, path_save, seed):
 
     if seed[0]:     
         if seed[2]:
-            remove(f"{path_save}/res.txt")
+            try:
+                remove(f"{path_save}/res.txt")
+            except:
+                pass
         if not(mp4_to_txt(path, path_save)):
             return False      
 
