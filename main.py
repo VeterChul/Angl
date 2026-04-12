@@ -3,8 +3,9 @@ from os import listdir, mkdir
 from fblock.main import main as getting_words_out
 from sblock.main import main as transcription
 from tblock.main import main as essay_f
+from importer.main import main as importer
 
-seed = ["111","0","1"]
+seed = ["010","1","1"]
 
 def main(path, path_save, seed):
     
@@ -42,13 +43,25 @@ def main(path, path_save, seed):
                 print("Директория для сохраненых файлов уже есть")
 
             transcriptions = transcription(pdf_file, pdf_save)
-            print(transcriptions)
+            
 
         if seed[2] != "0":
-            i = randint(0, len(fblock))
-            essay = essay_f(fblock[i])
+            j = randint(0, len(fblock))
+            print(fblock)
+            essay = essay_f(fblock[j])
             print(essay)
+    
+        importer(fblock, transcriptions, essay, f"{path_save}/{i}/ans.pdf")
+    
         break
+
+    # print("fbloc")
+    # print(fblock)
+    # print("transcriptions")
+    # print(transcriptions)
+    # print("essay")
+    # print(essay)
+    
         
         
 

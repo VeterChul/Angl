@@ -5,7 +5,7 @@ from fblock.txt_to_json import txt_for_json
 
 def main(path, path_save, seed):
 
-    r = {}
+    r = []
             
     #Создаем директорию для данных, если её ещзё нет
     try:

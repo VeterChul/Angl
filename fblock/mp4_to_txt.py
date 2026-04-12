@@ -13,7 +13,7 @@ def mp4_to_txt(path, path_save):
         list_mp3 = sorted(list_mp3)
 
         model = WhisperModel(
-                "large-v2,
+                "large-v2",
                 device="cuda",
                 compute_type="int8_float16",  # экономия VRAM
                 cpu_threads=4,                 # опционально, для декодирования на CPU
@@ -23,12 +23,11 @@ def mp4_to_txt(path, path_save):
         for j in list_mp3:
             print(f"Начало обработки {f"{path}/{j}"}")
             
-            
             segments, info = model.transcribe(
                 f"{path}/{j}",
                 beam_size=5,                        # чуть выше для качества (было 2)
                 temperature=0.0,
-                temperature_increment_on_fallback=0.2,
+                #temperature_increment_on_fallback=0.2,
                 best_of=5,
                 vad_filter=True,
                 vad_parameters={

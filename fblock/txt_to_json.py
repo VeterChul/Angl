@@ -54,7 +54,7 @@ def txt_for_json(path_save):
         
         try:
             ob = response['message']['content']
-            words = ob.split("; ")
+            words = ob.split(";")
             print(words)
             for word in words:
                 list_ans.append(word)
